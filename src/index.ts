@@ -1,60 +1,21 @@
 import Discord from "discord.js";
+import fs from 'fs';
+import path from 'path';
 import config from "./config";
 
 const client = new Discord.Client({ intents: 32767 });
 
-client.on("ready", async () => {
-  try {
-    console.log(`Logged in as ${client?.user?.tag}!`);
+const init = async () => {
+  const evtFiles = await fs.readdirSync(path.resolve(__dirname, 'events'));
 
-    const guilds = await client.guilds.fetch();
+  await Promise.all(evtFiles.map(async (file) => {
+    const eventName = file.split('.')[0];
+    const { default: event } = await import(`./events/${file}`);
+    client.on(eventName, (env) => event?.(env, client));
+  })).then(() => console.log('[#LOG]', `Carregando o total de ${evtFiles.length} eventos.`))
 
-    guilds.forEach(async (guild) => {
-      const guildInfo = await guild.fetch();
+  client.on('error', err => console.error('[#ERROR]', err));
 
-      if (guildInfo.id != "962044318548377660") {
-        return;
-      }
-
-      const channels = await guildInfo.channels.fetch();
-
-      channels.forEach(async (channel) => {
-        const channelInfo = await channel.fetch();
-        console.log({ channelInfo });
-        if (channelInfo.permissionsLocked || channelInfo.type != "GUILD_NEWS") {
-          return;
-        }
-
-        //clear messages
-        /*  const messages = await channelInfo.messages.fetch();
-
-        messages.forEach(async (message) => {
-          if (message.deletable) {
-            console.log(
-              `removing message for channelId: ${channelInfo.id} name: ${channelInfo.name} messageId: ${message.id}`
-            );
-
-            await message.delete();
-          }
-        }); */
-
-        const sendedMessage = await channelInfo.send("teste");
-
-        console.log(
-          `sended message for channelId: ${channelInfo.id} name: ${channelInfo.name} messageId: ${sendedMessage.id}`
-        );
-      });
-    });
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-client.on("message", (msg) => {
-  console.log({ msg });
-  if (!msg.content.includes("!clear")) {
-    return;
-  }
-});
-
-client.login(config.bot.token);
+  client.login(config.bot.token);
+};
+init();
