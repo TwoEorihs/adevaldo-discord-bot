@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import config from "./config";
 
-const client = new Discord.Client({ intents: 32767 });
+export const client = new Discord.Client({ intents: 32767 });
 
 const loadCommands = async () => {
   const cmdFiles = await fs.readdirSync(path.resolve(__dirname, 'commands'));

@@ -13,9 +13,11 @@
     "dotenv": "^16.0.0",
     "html-to-text": "^8.2.0",
     "imap": "^0.8.19",
-    "mailparser": "^3.4.0"
+    "mailparser": "^3.4.0",
+    "node-cron": "^3.0.0"
   },
   "devDependencies": {
+    "@types/node-cron": "^3.0.1",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.3"
   }
