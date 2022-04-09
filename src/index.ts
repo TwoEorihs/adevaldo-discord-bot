@@ -1,11 +1,11 @@
 import Discord from "discord.js";
-import Config from "./config/index.mjs";
+import config from "./config";
 
 const client = new Discord.Client({ intents: 32767 });
 
 client.on("ready", async () => {
   try {
-    console.log(`Logged in as ${client.user.tag}!`);
+    console.log(`Logged in as ${client?.user?.tag}!`);
 
     const guilds = await client.guilds.fetch();
 
@@ -20,7 +20,7 @@ client.on("ready", async () => {
 
       channels.forEach(async (channel) => {
         const channelInfo = await channel.fetch();
-
+        console.log({ channelInfo });
         if (channelInfo.permissionsLocked || channelInfo.type != "GUILD_NEWS") {
           return;
         }
@@ -51,9 +51,10 @@ client.on("ready", async () => {
 });
 
 client.on("message", (msg) => {
+  console.log({ msg });
   if (!msg.content.includes("!clear")) {
     return;
   }
 });
 
-client.login(Config.bot.token);
+client.login(config.bot.token);

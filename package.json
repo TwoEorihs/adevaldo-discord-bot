@@ -1,11 +1,12 @@
 {
-  "name": "Newsletter",
+  "name": "Adevaldo-bot",
   "version": "1.0.0",
   "main": "index.mjs",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/index.mjs"
+    "start": "ts-node-dev --ignore-watch node_modules --respawn --transpile-only './src/index.ts'",
+    "debugger": "ts-node-dev --inspect=0.0.0.0:9229 --notify --poll --respawn --transpile-only './src/index.ts'"
   },
   "dependencies": {
     "discord.js": "^13.6.0",
@@ -15,6 +16,7 @@
     "mailparser": "^3.4.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.3"
   }
 }
