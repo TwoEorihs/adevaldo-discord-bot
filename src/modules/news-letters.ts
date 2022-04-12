@@ -1,4 +1,4 @@
-import { isToday } from "date-fns";
+import { format, isToday } from "date-fns";
 import { convert } from "html-to-text";
 import cron from "node-cron";
 import removeAccents from "remove-accents";
@@ -64,14 +64,24 @@ export default async () => {
       "0 0 12 * * 1-5",
       async () => {
         const news = await requesNews();
+        console.log(news);
         if (news?.content) {
+          channels.send(
+            `*** Noticias - ${format(
+              new Date(news.timestamp),
+              "dd 'de' MMMM 'de' yyyy"
+            )} ***`
+          );
           await Promise.all(
             news.content.map(async (n) =>
               new Promise((resolve) => setTimeout(resolve, 5000)).then(() => {
-                if (n.length) channels.send(n);
+                if (n.length > 10)
+                  channels.send(`>>> :white_small_square:${n}`);
               })
             )
-          );
+          ).then(() => {
+            channels.send("Fonte: https://filipedeschamps.com.br/newsletter");
+          });
         }
       },
       {
