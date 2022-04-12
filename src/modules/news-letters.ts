@@ -6,6 +6,12 @@ import RSSParser from "rss-parser";
 import config from "../config";
 import { client } from "./../index";
 
+interface INews {
+  title: string;
+  timestamp: number;
+  isToday: boolean;
+  content: string[];
+}
 const formatContent = function (content: string) {
   const toConvert = content
     .replaceAll(/(<s|<\/s)(.*?)(>)/g, "**")
@@ -32,20 +38,21 @@ const formatContent = function (content: string) {
   return body;
 };
 
-export const requesNews = async () => {
+export const requesNews = async (): Promise<INews | undefined> => {
   const url = process.env.NEWSLETTERS_KILLER_URL;
   if (!url) return;
 
   const parser = new RSSParser();
   const feed = await parser.parseURL(url);
 
-  const newsArr = feed.items.map((item) => ({
-    title: removeAccents(item?.title || "").replace(/['"“”‘’„”«»]/g, ""),
-    timestamp: item?.isoDate && +new Date(item?.isoDate),
-    timestamp2: item?.isoDate,
-    isToday: item?.isoDate && isToday(new Date(item?.isoDate)),
-    content: formatContent(item?.content || ""),
-  }));
+  const newsArr: INews[] = await Promise.all(
+    feed.items.map((item) => ({
+      title: removeAccents(item?.title || "").replace(/['"“”‘’„”«»]/g, ""),
+      timestamp: (item?.isoDate && +new Date(item?.isoDate)) || 0,
+      isToday: (item?.isoDate && isToday(new Date(item?.isoDate))) || false,
+      content: formatContent(item?.content || ""),
+    }))
+  );
 
   return newsArr.find((news) => news.isToday);
 };
@@ -56,8 +63,16 @@ export default async () => {
     cron.schedule(
       "0 0 12 * * 1-5",
       async () => {
-        requesNews();
-        channels.send("running a task every one minutes");
+        const news = await requesNews();
+        if (news?.content) {
+          await Promise.all(
+            news.content.map(async (n) =>
+              new Promise((resolve) => setTimeout(resolve, 5000)).then(() => {
+                if (n.length) channels.send(n);
+              })
+            )
+          );
+        }
       },
       {
         scheduled: true,
