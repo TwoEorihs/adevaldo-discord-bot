@@ -1,11 +1,12 @@
 {
-  "name": "Adevaldo-bot",
+  "name": "adevaldo-bot",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "./dist/server/index.js",
   "license": "MIT",
-  "type": "module",
   "scripts": {
-    "start": "ts-node-dev --ignore-watch node_modules --respawn --transpile-only './src/index.ts'",
+    "build": "tsc && cp .env ./dist/.env",
+    "start": "node ./dist/index.js",
+    "dev": "ts-node-dev --ignore-watch node_modules --respawn --transpile-only './src/index.ts'",
     "debugger": "ts-node-dev --inspect=0.0.0.0:9229 --notify --poll --respawn --transpile-only './src/index.ts'"
   },
   "dependencies": {

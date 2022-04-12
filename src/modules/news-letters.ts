@@ -82,6 +82,9 @@ export default async () => {
           ).then(() => {
             channels.send("Fonte: https://filipedeschamps.com.br/newsletter");
           });
+          console.warn("[#LOG]", `Send news ${news.title}`);
+        } else {
+          console.warn("[#LOG]", `Not found news!`);
         }
       },
       {

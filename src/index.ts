@@ -12,7 +12,6 @@ const loadCommands = async () => {
       console.log(file);
 
       const { default: module } = await import(`./commands/${file}`);
-      console.log(module);
     })
   ).then(() =>
     console.log("[#LOG]", `Carregando o total de ${cmdFiles.length} eventos.`)
@@ -34,7 +33,7 @@ const loadEvents = async () => {
 };
 
 const init = async () => {
-  loadCommands();
+  // loadCommands();
   loadEvents();
 
   client.on("error", (err) => console.error("[#ERROR]", err));
