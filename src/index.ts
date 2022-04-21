@@ -2,7 +2,6 @@ import Discord from "discord.js";
 import fs from "fs";
 import path from "path";
 import config from "./config";
-
 export const client = new Discord.Client({ intents: 32767 });
 
 const loadCommands = async () => {
@@ -25,7 +24,7 @@ const loadEvents = async () => {
     evtFiles.map(async (file) => {
       const eventName = file.split(".")[0];
       const { default: event } = await import(`./events/${file}`);
-      client.on(eventName, (env) => event?.(env, client));
+      client.on(eventName, (...args) => event(...args));
     })
   ).then(() =>
     console.log("[#LOG]", `Carregando o total de ${evtFiles.length} eventos.`)
