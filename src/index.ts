@@ -24,7 +24,7 @@ const loadEvents = async () => {
     evtFiles.map(async (file) => {
       const eventName = file.split(".")[0];
       const { default: event } = await import(`./events/${file}`);
-      client.on(eventName, (...args) => event(...args));
+      client.on(eventName, event);
     })
   ).then(() =>
     console.log("[#LOG]", `Carregando o total de ${evtFiles.length} eventos.`)
