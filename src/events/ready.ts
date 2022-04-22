@@ -1,9 +1,9 @@
 import { Client, ClientEvents } from "discord.js";
-import config from "../config";
+import welcome_message from "../modules/welcome_message";
 import newsLetters from "../modules/news-letters";
 
-export default async (events: ClientEvents, client: Client) => {
+export default async (events: ClientEvents) => {
   console.warn("[#LOG]", `Bot is aready!`);
-  const guild = await client.guilds.fetch(config.bot.guidId);
   newsLetters();
+  welcome_message();
 };
