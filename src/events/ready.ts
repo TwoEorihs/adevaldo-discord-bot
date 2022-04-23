@@ -1,6 +1,6 @@
-import { Client, ClientEvents } from "discord.js";
+import { ClientEvents } from "discord.js";
+import newsLetters from "../modules/newsletters";
 import welcome_message from "../modules/welcome_message";
-import newsLetters from "../modules/news-letters";
 
 export default async (events: ClientEvents) => {
   console.warn("[#LOG]", `Bot is aready!`);

@@ -1,4 +1,6 @@
 import * as dotenv from "dotenv";
+import newsLetterConfig from "../constants/newsLetter.json";
+import { INewsLetterList } from "./../models/newsLetters";
 
 dotenv.config();
 
@@ -11,7 +13,10 @@ export const bot = {
 
 export let messagesId: string[] = [];
 
+const newsLetterList: INewsLetterList = newsLetterConfig;
+
 export default {
   bot,
   messagesId,
+  newsLetterList,
 };
