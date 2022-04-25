@@ -5,7 +5,7 @@ import config from "./config";
 export const client = new Discord.Client({ intents: 32767 });
 
 const loadCommands = async () => {
-  const cmdFiles = await fs.readdirSync(path.resolve(__dirname, "commands"));
+  const cmdFiles = fs.readdirSync(path.resolve(__dirname, "commands"));
   await Promise.all(
     cmdFiles.map(async (file) => {
       console.log(file);
@@ -18,7 +18,7 @@ const loadCommands = async () => {
 };
 
 const loadEvents = async () => {
-  const evtFiles = await fs.readdirSync(path.resolve(__dirname, "events"));
+  const evtFiles = fs.readdirSync(path.resolve(__dirname, "events"));
 
   await Promise.all(
     evtFiles.map(async (file) => {

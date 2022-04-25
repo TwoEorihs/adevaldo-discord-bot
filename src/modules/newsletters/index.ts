@@ -4,7 +4,7 @@ import path from "path";
 import config from "../../config/index";
 
 export default async () => {
-  const evtFiles = await fs.readdirSync(path.resolve(__dirname, "./"));
+  const evtFiles = fs.readdirSync(path.resolve(__dirname, "./"));
 
   await Promise.all(
     evtFiles.map(async (file) => {
