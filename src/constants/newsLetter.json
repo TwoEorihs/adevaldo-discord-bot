@@ -9,7 +9,7 @@
   "dailyChallenge": {
     "channelId": "966732065565442068",
     "urlMailBox": "https://kill-the-newsletter.com/feeds/1h7t9db17vnyz8zd.xml",
-    "cronSchedule": "0 0 13 * * 1-5",
+    "cronSchedule": "0 0 13 * * *",
     "title": "",
     "source": ""
   },

@@ -1,8 +1,9 @@
 import * as dotenv from "dotenv";
+import masterRolesConfig from "../constants/masterRoles.json";
 import newsLetterConfig from "../constants/newsLetter.json";
-import rolesListConfig from "../constants/roles.json";
+import skillsRolesConfig from "../constants/skillsRoles.json";
 import { INewsLetterList } from "./../models/newsLetters";
-import { IRolesList } from "./../models/roles";
+import { IMasterRolesList, ISkillsRolesList } from "./../models/roles";
 
 dotenv.config();
 
@@ -15,11 +16,13 @@ export const bot = {
 export let messagesId: string[] = [];
 
 const newsLetterList: INewsLetterList = newsLetterConfig;
-const rolesList: IRolesList = rolesListConfig;
+const masterRolesList: IMasterRolesList = masterRolesConfig;
+const skillsRoles: ISkillsRolesList = skillsRolesConfig;
 
 export default {
   bot,
   messagesId,
   newsLetterList,
-  rolesList,
+  masterRolesList,
+  skillsRoles,
 };

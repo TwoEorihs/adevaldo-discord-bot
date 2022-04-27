@@ -7,6 +7,4 @@ export default async (interaction: Interaction) => {
     !interaction.isSelectMenu
   )
     return;
-
-  console.log(interaction);
 };
