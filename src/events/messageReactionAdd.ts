@@ -31,10 +31,11 @@ export default async (messageReaction: MessageReaction, user: User) => {
       const text = hasRole
         ? `✅ @${user.tag} Roles removida com sucesso!`
         : `✅ @${user.tag} Roles adicionada com sucesso!`;
+
       messageReaction.message.reply(text).then((msg) => {
         setTimeout(() => {
           msg.delete();
-        }, 5000);
+        }, 2000);
       });
     }
   }
