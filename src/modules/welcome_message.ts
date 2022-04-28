@@ -1,51 +1,26 @@
-import { Client, MessageEmbed } from "discord.js";
-import { client } from "./../index";
-import { BlackRoles, RolesCategorys, RolesList } from "../models/roles.enum";
 import config from "../config";
-import roles from "../assets/roles.json";
+import { client } from "./../index";
 
 export default async () => {
+  //TODO: create global var to channelId
   const channel = await client.channels.fetch("963989486096764969");
 
   if (channel?.isText()) {
-    // channel?.
-    // roles as RolesList;
-    // roles.especiality[0].
-    // verificar se a mensagem existe
     const totalMessages = await channel.messages.fetch({ limit: 100 });
-    totalMessages.size > 0 &&
-      totalMessages.forEach((message) => {
-        message.delete();
-      });
-    // ou deletar mensagens anteriores
-    Object.keys(roles).forEach(async (roleCategory: string) => {
-      const embed = new MessageEmbed().setColor("RANDOM");
-
-      let body = "";
-
-      for (const role of (<any>roles)[roleCategory]) {
-        body += `${role.emoji}  -  ${role.name}\n`;
-      }
-
-      embed.setTitle("Escolha seu cargo");
-
-      embed.addField(
-        "Basta reagir com o emoji correspondente ao cargo que você deseja receber",
-        body
-      );
-      await channel
-        .send({ content: null, embeds: [embed] })
-        .then(async (message) => {
-          await Promise.all(
-            (<any>roles)[roleCategory].map(async (role: any) => {
-              await message.react(role.emoji);
-            })
-          );
-          config.messagesId.push(message.id);
-        });
+    // totalMessages.size > 0 &&
+    //   totalMessages.forEach((message) => {
+    //     message.delete();
+    //   });
+    if (totalMessages.size > 4) return;
+    await channel.send(`\n***Reaja para adquirir seu cargo e prosseguir***\n`);
+    Object.keys(config.skillsRoles).forEach(async (skillsRole: string) => {
+      const category = config.skillsRoles[skillsRole];
+      const body = category
+        .map((role) => `${role.emoji} - ${role.tag}\n`)
+        .toString()
+        .replaceAll("\n,", "\n");
+      const msg = await channel.send(`>>> ***${skillsRole}***\n${body}\n`);
+      category.map((role) => role?.emoji && msg.react(role?.emoji));
     });
-    // enviar mensagens
-    // ouvir react dos usuarios
-    // setar roles
   }
 };
